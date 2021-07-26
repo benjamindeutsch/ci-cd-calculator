@@ -20,16 +20,28 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'ci-cd-calculator'`, () => {
+  it('should calculate', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ci-cd-calculator');
+    expect(app.calculate(2,2,'+')).toEqual(4);
+    expect(app.calculate(2,2,'-')).toEqual(0);
+    expect(app.calculate(2,2,'*')).toEqual(4);
+    expect(app.calculate(2,2,'/')).toEqual(1);
   });
 
-  it('should render title', () => {
+  it('should throw an error if operator does not exist', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('ci-cd-calculator app is running!');
+    const app = fixture.componentInstance;
+    expect(function(){app.calculate(2,2,'^')}).toThrow(new Error("Operator not defined"));
+  });
+
+  it('should calculate with operands and operator', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    app.operand1 = 4;
+    app.operand2 = 2;
+    app.operator = '/';
+    app.onButtonClick();
+    expect(app.result).toEqual(2);
   });
 });
